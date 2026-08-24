@@ -1,0 +1,644 @@
+{
+  "schemaVersion": 1,
+  "release": {
+    "productVersion": "0.1.0",
+    "backendRelease": "v0.4.0",
+    "backendCommit": "4ff94afc860109e683c56c3acffedb8a6c233e03",
+    "backendSourceSnapshotSha256": "df03dff119034858ec0a25b1171226ff3539d015318c15b5a2359eab49118dcf",
+    "generatedAt": "2026-08-24T00:00:00.000Z",
+    "generator": "managed-oss-cloud/scripts/generate-product-repositories.mjs"
+  },
+  "product": {
+    "slug": "orbitcrm",
+    "command": "orbitcrm",
+    "mcpPrefix": "orbitcrm",
+    "environmentPrefix": "ORBITCRM",
+    "name": "OrbitCRM",
+    "tagline": "Relationship context, pipeline evidence, and AI-assisted next actions in a single workspace.",
+    "repository": "https://github.com/rohanarun/orbitcrm",
+    "license": "MIT",
+    "accent": "#9d84ff",
+    "accentDark": "#5b43b7"
+  },
+  "module": {
+    "id": "crm",
+    "category": "Customer relationships",
+    "description": "Contacts, companies, pipelines, activities, and autonomous follow-up plans in one graph.",
+    "minimumHostedPlan": "starter",
+    "resourceClass": "shared",
+    "recordTypes": [
+      "contact",
+      "company",
+      "deal",
+      "activity"
+    ],
+    "aiCapabilities": [
+      "enrich record",
+      "summarize relationship",
+      "recommend next action"
+    ]
+  },
+  "backend": {
+    "defaultUrl": "https://cloud.getsupers.com",
+    "workspaceEndpoint": "/api/suite/workspace",
+    "actionEndpointPattern": "/api/suite/modules/crm/actions/{actionId}",
+    "authentication": "Bearer API token",
+    "databaseBoundary": "All shared database access and tenant isolation remain behind the managed-oss-cloud API."
+  },
+  "cleanRoom": {
+    "statement": "Original clean-room implementation of the customer relationships software category, designed and written independently.",
+    "sourceBoundary": "Public category behavior informed requirements; implementation and product identity are original."
+  },
+  "actions": [
+    {
+      "id": "account-upsert",
+      "moduleId": "crm",
+      "title": "Upsert organization account",
+      "description": "Create or reconcile an account by an explicit external key without fuzzy autonomous merging.",
+      "operation": "command",
+      "recordType": "account",
+      "requiredFields": [
+        "externalKey",
+        "name",
+        "domain",
+        "idempotencyKey"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "externalKey",
+          "name",
+          "domain",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "externalKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "domain": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 253
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{16,200}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "externalKey": "acct-42",
+        "name": "Northwind",
+        "domain": "northwind.example",
+        "idempotencyKey": "crm.account-upsert.sample-0001"
+      },
+      "requiredScope": "write",
+      "mcpToolName": "crm_account_upsert",
+      "cliExample": "supersuite action crm account-upsert '{\"externalKey\":\"acct-42\",\"name\":\"Northwind\",\"domain\":\"northwind.example\",\"idempotencyKey\":\"crm.account-upsert.sample-0001\"}'",
+      "risk": "low",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": true,
+      "backendMcpToolName": "crm_account_upsert",
+      "productMcpToolName": "orbitcrm_account_upsert",
+      "productCliExample": "orbitcrm action account-upsert '{\"externalKey\":\"acct-42\",\"name\":\"Northwind\",\"domain\":\"northwind.example\",\"idempotencyKey\":\"crm.account-upsert.sample-0001\"}'"
+    },
+    {
+      "id": "contact-link",
+      "moduleId": "crm",
+      "title": "Link contact to account",
+      "description": "Create a consent-aware contact identity and link it to one owned account.",
+      "operation": "command",
+      "recordType": "contact",
+      "requiredFields": [
+        "accountId",
+        "name",
+        "email",
+        "consentBasis",
+        "idempotencyKey"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "accountId",
+          "name",
+          "email",
+          "consentBasis",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "consentBasis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{16,200}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "accountId": "00000000-0000-4000-8000-000000000100",
+        "name": "Avery",
+        "email": "avery@example.com",
+        "consentBasis": "Existing customer",
+        "idempotencyKey": "crm.contact-link.sample-0001"
+      },
+      "requiredScope": "write",
+      "mcpToolName": "crm_contact_link",
+      "cliExample": "supersuite action crm contact-link '{\"accountId\":\"00000000-0000-4000-8000-000000000100\",\"name\":\"Avery\",\"email\":\"avery@example.com\",\"consentBasis\":\"Existing customer\",\"idempotencyKey\":\"crm.contact-link.sample-0001\"}'",
+      "risk": "low",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": true,
+      "backendMcpToolName": "crm_contact_link",
+      "productMcpToolName": "orbitcrm_contact_link",
+      "productCliExample": "orbitcrm action contact-link '{\"accountId\":\"00000000-0000-4000-8000-000000000100\",\"name\":\"Avery\",\"email\":\"avery@example.com\",\"consentBasis\":\"Existing customer\",\"idempotencyKey\":\"crm.contact-link.sample-0001\"}'"
+    },
+    {
+      "id": "opportunity-open",
+      "moduleId": "crm",
+      "title": "Open qualified opportunity",
+      "description": "Open a currency-safe opportunity with amount in integer minor units and an explicit close hypothesis.",
+      "operation": "command",
+      "recordType": "opportunity",
+      "requiredFields": [
+        "accountId",
+        "name",
+        "amountMinor",
+        "currency",
+        "expectedCloseAt",
+        "idempotencyKey"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "accountId",
+          "name",
+          "amountMinor",
+          "currency",
+          "expectedCloseAt",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "amountMinor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "expectedCloseAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{16,200}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "accountId": "00000000-0000-4000-8000-000000000100",
+        "name": "Expansion",
+        "amountMinor": 250000,
+        "currency": "USD",
+        "expectedCloseAt": "2026-10-01T00:00:00.000Z",
+        "idempotencyKey": "crm.opportunity-open.sample-0001"
+      },
+      "requiredScope": "write",
+      "mcpToolName": "crm_opportunity_open",
+      "cliExample": "supersuite action crm opportunity-open '{\"accountId\":\"00000000-0000-4000-8000-000000000100\",\"name\":\"Expansion\",\"amountMinor\":250000,\"currency\":\"USD\",\"expectedCloseAt\":\"2026-10-01T00:00:00.000Z\",\"idempotencyKey\":\"crm.opportunity-open.sample-0001\"}'",
+      "risk": "low",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": true,
+      "backendMcpToolName": "crm_opportunity_open",
+      "productMcpToolName": "orbitcrm_opportunity_open",
+      "productCliExample": "orbitcrm action opportunity-open '{\"accountId\":\"00000000-0000-4000-8000-000000000100\",\"name\":\"Expansion\",\"amountMinor\":250000,\"currency\":\"USD\",\"expectedCloseAt\":\"2026-10-01T00:00:00.000Z\",\"idempotencyKey\":\"crm.opportunity-open.sample-0001\"}'"
+    },
+    {
+      "id": "opportunity-transition",
+      "moduleId": "crm",
+      "title": "Transition opportunity stage",
+      "description": "Move an opportunity through an allowed pipeline edge using optimistic version control.",
+      "operation": "command",
+      "recordType": "opportunity",
+      "requiredFields": [
+        "opportunityId",
+        "toStage",
+        "expectedVersion",
+        "reason",
+        "idempotencyKey"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "opportunityId",
+          "toStage",
+          "expectedVersion",
+          "reason",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "opportunityId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "toStage": {
+            "enum": [
+              "qualified",
+              "evaluation",
+              "proposal",
+              "won",
+              "lost"
+            ]
+          },
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{16,200}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "opportunityId": "00000000-0000-4000-8000-000000000100",
+        "toStage": "evaluation",
+        "expectedVersion": 1,
+        "reason": "Discovery completed",
+        "idempotencyKey": "crm.opportunity-transition.sample-0001"
+      },
+      "requiredScope": "write",
+      "mcpToolName": "crm_opportunity_transition",
+      "cliExample": "supersuite action crm opportunity-transition '{\"opportunityId\":\"00000000-0000-4000-8000-000000000100\",\"toStage\":\"evaluation\",\"expectedVersion\":1,\"reason\":\"Discovery completed\",\"idempotencyKey\":\"crm.opportunity-transition.sample-0001\"}'",
+      "risk": "low",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": true,
+      "backendMcpToolName": "crm_opportunity_transition",
+      "productMcpToolName": "orbitcrm_opportunity_transition",
+      "productCliExample": "orbitcrm action opportunity-transition '{\"opportunityId\":\"00000000-0000-4000-8000-000000000100\",\"toStage\":\"evaluation\",\"expectedVersion\":1,\"reason\":\"Discovery completed\",\"idempotencyKey\":\"crm.opportunity-transition.sample-0001\"}'"
+    },
+    {
+      "id": "activity-record",
+      "moduleId": "crm",
+      "title": "Record customer activity",
+      "description": "Append a timestamped interaction fact without rewriting historical relationship data.",
+      "operation": "command",
+      "recordType": "activity",
+      "requiredFields": [
+        "accountId",
+        "kind",
+        "occurredAt",
+        "summary",
+        "idempotencyKey"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "accountId",
+          "kind",
+          "occurredAt",
+          "summary",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "enum": [
+              "call",
+              "email",
+              "meeting",
+              "note"
+            ]
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{16,200}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "accountId": "00000000-0000-4000-8000-000000000100",
+        "kind": "meeting",
+        "occurredAt": "2026-08-24T12:00:00.000Z",
+        "summary": "Reviewed deployment needs.",
+        "idempotencyKey": "crm.activity-record.sample-0001"
+      },
+      "requiredScope": "write",
+      "mcpToolName": "crm_activity_record",
+      "cliExample": "supersuite action crm activity-record '{\"accountId\":\"00000000-0000-4000-8000-000000000100\",\"kind\":\"meeting\",\"occurredAt\":\"2026-08-24T12:00:00.000Z\",\"summary\":\"Reviewed deployment needs.\",\"idempotencyKey\":\"crm.activity-record.sample-0001\"}'",
+      "risk": "low",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": true,
+      "backendMcpToolName": "crm_activity_record",
+      "productMcpToolName": "orbitcrm_activity_record",
+      "productCliExample": "orbitcrm action activity-record '{\"accountId\":\"00000000-0000-4000-8000-000000000100\",\"kind\":\"meeting\",\"occurredAt\":\"2026-08-24T12:00:00.000Z\",\"summary\":\"Reviewed deployment needs.\",\"idempotencyKey\":\"crm.activity-record.sample-0001\"}'"
+    },
+    {
+      "id": "duplicate-review-propose",
+      "moduleId": "crm",
+      "title": "Propose duplicate review",
+      "description": "Queue explainable candidate matches with field-level evidence; never merges records automatically.",
+      "operation": "ai",
+      "recordType": "ai-request-audit",
+      "requiredFields": [
+        "recordId",
+        "instruction",
+        "evidenceIds",
+        "idempotencyKey"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "recordId",
+          "instruction",
+          "evidenceIds",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "recordId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "instruction": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "evidenceIds": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{16,200}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "recordId": "00000000-0000-4000-8000-000000000100",
+        "instruction": "Find likely duplicates and explain each signal.",
+        "evidenceIds": [
+          "00000000-0000-4000-8000-000000000100",
+          "00000000-0000-4000-8000-000000000101"
+        ],
+        "idempotencyKey": "crm.duplicate-review-propose.sample-0001"
+      },
+      "requiredScope": "ai",
+      "mcpToolName": "crm_duplicate_review_propose",
+      "cliExample": "supersuite action crm duplicate-review-propose '{\"recordId\":\"00000000-0000-4000-8000-000000000100\",\"instruction\":\"Find likely duplicates and explain each signal.\",\"evidenceIds\":[\"00000000-0000-4000-8000-000000000100\",\"00000000-0000-4000-8000-000000000101\"],\"idempotencyKey\":\"crm.duplicate-review-propose.sample-0001\"}'",
+      "risk": "moderate",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": true,
+      "backendMcpToolName": "crm_duplicate_review_propose",
+      "productMcpToolName": "orbitcrm_duplicate_review_propose",
+      "productCliExample": "orbitcrm action duplicate-review-propose '{\"recordId\":\"00000000-0000-4000-8000-000000000100\",\"instruction\":\"Find likely duplicates and explain each signal.\",\"evidenceIds\":[\"00000000-0000-4000-8000-000000000100\",\"00000000-0000-4000-8000-000000000101\"],\"idempotencyKey\":\"crm.duplicate-review-propose.sample-0001\"}'"
+    },
+    {
+      "id": "next-action-propose",
+      "moduleId": "crm",
+      "title": "Propose next relationship action",
+      "description": "Queue an evidence-backed follow-up plan with uncertainty and no autonomous outreach.",
+      "operation": "ai",
+      "recordType": "ai-request-audit",
+      "requiredFields": [
+        "accountId",
+        "instruction",
+        "evidenceIds",
+        "idempotencyKey"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "accountId",
+          "instruction",
+          "evidenceIds",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "instruction": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "evidenceIds": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{16,200}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "accountId": "00000000-0000-4000-8000-000000000100",
+        "instruction": "Suggest the smallest useful next step.",
+        "evidenceIds": [
+          "00000000-0000-4000-8000-000000000100"
+        ],
+        "idempotencyKey": "crm.next-action-propose.sample-0001"
+      },
+      "requiredScope": "ai",
+      "mcpToolName": "crm_next_action_propose",
+      "cliExample": "supersuite action crm next-action-propose '{\"accountId\":\"00000000-0000-4000-8000-000000000100\",\"instruction\":\"Suggest the smallest useful next step.\",\"evidenceIds\":[\"00000000-0000-4000-8000-000000000100\"],\"idempotencyKey\":\"crm.next-action-propose.sample-0001\"}'",
+      "risk": "moderate",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": true,
+      "backendMcpToolName": "crm_next_action_propose",
+      "productMcpToolName": "orbitcrm_next_action_propose",
+      "productCliExample": "orbitcrm action next-action-propose '{\"accountId\":\"00000000-0000-4000-8000-000000000100\",\"instruction\":\"Suggest the smallest useful next step.\",\"evidenceIds\":[\"00000000-0000-4000-8000-000000000100\"],\"idempotencyKey\":\"crm.next-action-propose.sample-0001\"}'"
+    },
+    {
+      "id": "pipeline-forecast",
+      "moduleId": "crm",
+      "title": "Compute transparent pipeline forecast",
+      "description": "Calculate deterministic weighted totals from explicit stage probabilities and integer minor units.",
+      "operation": "read",
+      "recordType": "opportunity",
+      "requiredFields": [
+        "currency",
+        "stageProbabilities"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "currency",
+          "stageProbabilities"
+        ],
+        "properties": {
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "stageProbabilities": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "currency": "USD",
+        "stageProbabilities": {
+          "qualified": 0.2,
+          "evaluation": 0.4,
+          "proposal": 0.7
+        }
+      },
+      "requiredScope": "read",
+      "mcpToolName": "crm_pipeline_forecast",
+      "cliExample": "supersuite action crm pipeline-forecast '{\"currency\":\"USD\",\"stageProbabilities\":{\"qualified\":0.2,\"evaluation\":0.4,\"proposal\":0.7}}'",
+      "risk": "low",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": false,
+      "backendMcpToolName": "crm_pipeline_forecast",
+      "productMcpToolName": "orbitcrm_pipeline_forecast",
+      "productCliExample": "orbitcrm action pipeline-forecast '{\"currency\":\"USD\",\"stageProbabilities\":{\"qualified\":0.2,\"evaluation\":0.4,\"proposal\":0.7}}'"
+    },
+    {
+      "id": "crm-export",
+      "moduleId": "crm",
+      "title": "Export CRM graph",
+      "description": "Create a private canonical graph export with account, contact, opportunity, and activity links.",
+      "operation": "command",
+      "recordType": "export-job",
+      "requiredFields": [
+        "accountIds",
+        "format",
+        "idempotencyKey"
+      ],
+      "engine": "core",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "accountIds",
+          "format",
+          "idempotencyKey"
+        ],
+        "properties": {
+          "accountIds": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "format": {
+            "enum": [
+              "canonical-json",
+              "csv-bundle"
+            ]
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{16,200}$"
+          }
+        },
+        "additionalProperties": false
+      },
+      "exampleInput": {
+        "accountIds": [
+          "00000000-0000-4000-8000-000000000100"
+        ],
+        "format": "canonical-json",
+        "idempotencyKey": "crm.crm-export.sample-0001"
+      },
+      "requiredScope": "write",
+      "mcpToolName": "crm_crm_export",
+      "cliExample": "supersuite action crm crm-export '{\"accountIds\":[\"00000000-0000-4000-8000-000000000100\"],\"format\":\"canonical-json\",\"idempotencyKey\":\"crm.crm-export.sample-0001\"}'",
+      "risk": "low",
+      "destructive": false,
+      "externalEffect": false,
+      "idempotent": true,
+      "backendMcpToolName": "crm_crm_export",
+      "productMcpToolName": "orbitcrm_crm_export",
+      "productCliExample": "orbitcrm action crm-export '{\"accountIds\":[\"00000000-0000-4000-8000-000000000100\"],\"format\":\"canonical-json\",\"idempotencyKey\":\"crm.crm-export.sample-0001\"}'"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@managed-oss/orbitcrm",
+  "version": "0.1.0",
+  "description": "Relationship context, pipeline evidence, and AI-assisted next actions in a single workspace.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohanarun/orbitcrm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rohanarun/orbitcrm/issues"
+  },
+  "homepage": "https://github.com/rohanarun/orbitcrm#readme",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "bin": {
+    "orbitcrm": "src/cli.mjs",
+    "orbitcrm-mcp": "src/mcp.mjs"
+  },
+  "files": [
+    "src",
+    "web",
+    "product-manifest.json",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md",
+    "Dockerfile"
+  ],
+  "scripts": {
+    "start": "node src/web-server.mjs",
+    "test": "node --test --test-concurrency=1",
+    "verify": "node scripts/verify-manifest.mjs && node --test --test-concurrency=1"
+  }
+}

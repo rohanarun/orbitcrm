@@ -1,0 +1,169 @@
+{
+  "schema": "managed-oss-functional-tutorial.v1",
+  "product": {
+    "slug": "orbitcrm",
+    "name": "OrbitCRM",
+    "moduleId": "crm",
+    "version": "0.3.1",
+    "manifestSha256": "40e18ce5ed4c152f1bec25b5608ff7c87143c1a9d653cd85480494df11a729ae"
+  },
+  "backend": {
+    "release": "v0.4.4",
+    "commit": "148abce99b91d8b9fdc8aa41c3f0eba283796db4"
+  },
+  "testedAt": "2026-08-25T21:59:13.014Z",
+  "browser": {
+    "engine": "Chromium",
+    "version": "151.0.7922.174",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "functionalProof": {
+    "action": {
+      "id": "account-upsert",
+      "title": "Upsert organization account",
+      "httpStatus": 200
+    },
+    "record": {
+      "id": "27bece6d-1729-44f7-8352-f4fcb9f00fc1",
+      "recordType": "account",
+      "title": "OrbitCRM tutorial workspace",
+      "state": "active"
+    },
+    "detail": {
+      "httpStatus": 200,
+      "matched": true
+    },
+    "assertions": [
+      "browser-authenticated-real-backend",
+      "guided-form-submitted",
+      "action-http-200",
+      "durable-record-returned",
+      "record-detail-http-200",
+      "exact-record-reopened-in-ui"
+    ]
+  },
+  "timeline": [
+    {
+      "stepId": "overview",
+      "observedLabel": "Meet OrbitCRM",
+      "observedFact": "Open the real OrbitCRM workspace and identify its core workflow.",
+      "startMs": 0,
+      "endMs": 2250
+    },
+    {
+      "stepId": "connect",
+      "observedLabel": "Connect the workspace",
+      "observedFact": "Authenticate this browser to the isolated shared backend and load durable records.",
+      "startMs": 2250,
+      "endMs": 5375
+    },
+    {
+      "stepId": "configure",
+      "observedLabel": "Upsert organization account",
+      "observedFact": "Complete the guided, contract-validated form for the product's primary workflow.",
+      "startMs": 5375,
+      "endMs": 7875
+    },
+    {
+      "stepId": "execute",
+      "observedLabel": "Run the real workflow",
+      "observedFact": "Submit the action to the shared backend and require a successful durable result.",
+      "startMs": 7875,
+      "endMs": 10375
+    },
+    {
+      "stepId": "inspect",
+      "observedLabel": "Inspect the saved record",
+      "observedFact": "Search the product record view and reopen the exact record returned by the workflow.",
+      "startMs": 10375,
+      "endMs": 17000
+    }
+  ],
+  "explanation": {
+    "title": "Creating an Organization Account in OrbitCRM",
+    "summary": "Connect your workspace, configure and execute an upsert organization account command, and verify the resulting active record in OrbitCRM.",
+    "cues": [
+      {
+        "stepId": "overview",
+        "startMs": 0,
+        "endMs": 2250,
+        "label": "Meet OrbitCRM",
+        "subtitle": "Explore the OrbitCRM overview dashboard and available operations."
+      },
+      {
+        "stepId": "connect",
+        "startMs": 2250,
+        "endMs": 5375,
+        "label": "Connect workspace",
+        "subtitle": "Connect the workspace to initialize backend integration."
+      },
+      {
+        "stepId": "configure",
+        "startMs": 5375,
+        "endMs": 7875,
+        "label": "Configure account upsert",
+        "subtitle": "Enter external key, name, domain, and idempotency key into the action form."
+      },
+      {
+        "stepId": "execute",
+        "startMs": 7875,
+        "endMs": 10375,
+        "label": "Run workflow",
+        "subtitle": "Execute the upsert action and review the returned workflow result."
+      },
+      {
+        "stepId": "inspect",
+        "startMs": 10375,
+        "endMs": 17000,
+        "label": "Inspect saved record",
+        "subtitle": "Open the Records view to inspect the newly created active account record."
+      }
+    ],
+    "generation": {
+      "provider": "OpenRouter",
+      "model": "google/gemini-3.7-flash",
+      "requestedModel": "google/gemini-3.7-flash",
+      "responseModel": "google/gemini-3.7-flash",
+      "responseId": "gen-1787695148-0phop3Nceq973bA3IzaI",
+      "responseCreatedAt": "2026-08-25T21:59:08.000Z",
+      "input": {
+        "rawVideoSha256": "70ff20b44fd4de720c0ffe81873df2438efaed44dbfe2c970255343af14df9c7",
+        "workflowFactsSha256": "4d4739328b1bb1e4db16146b6d585e8b71c1118a1eec151463d7f88e69c3f85d"
+      },
+      "usage": {
+        "promptTokens": 1560,
+        "completionTokens": 827,
+        "totalTokens": 2387
+      }
+    }
+  },
+  "video": {
+    "raw": {
+      "sha256": "70ff20b44fd4de720c0ffe81873df2438efaed44dbfe2c970255343af14df9c7",
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "durationSeconds": 17,
+      "sizeBytes": 361794
+    },
+    "final": {
+      "file": "docs/tutorial.mp4",
+      "sha256": "19bb7124d84cb0025c666bc1a20fe09df9887347fdd40dd3ed650374ef0ed74b",
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "durationSeconds": 17,
+      "sizeBytes": 372363
+    },
+    "subtitles": {
+      "file": "docs/tutorial.srt",
+      "sha256": "5903e70daa15ab02808ea5db77fe146c16e7f54515325fada828ad14c6ea5c80",
+      "format": "SubRip"
+    },
+    "overlaysBurnedIn": true,
+    "silent": true
+  }
+}

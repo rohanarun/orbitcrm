@@ -1,0 +1,19 @@
+1
+00:00:00,000 --> 00:00:02,250
+Explore the OrbitCRM overview dashboard and available operations.
+
+2
+00:00:02,250 --> 00:00:05,375
+Connect the workspace to initialize backend integration.
+
+3
+00:00:05,375 --> 00:00:07,875
+Enter external key, name, domain, and idempotency key into the action form.
+
+4
+00:00:07,875 --> 00:00:10,375
+Execute the upsert action and review the returned workflow result.
+
+5
+00:00:10,375 --> 00:00:17,000
+Open the Records view to inspect the newly created active account record.

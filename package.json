@@ -1,6 +1,6 @@
 {
   "name": "@managed-oss/orbitcrm",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Relationship context, pipeline evidence, and AI-assisted next actions in a single workspace.",
   "type": "module",
   "license": "MIT",

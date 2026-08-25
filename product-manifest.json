@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "release": {
-    "productVersion": "0.1.0",
-    "backendRelease": "v0.4.0",
-    "backendCommit": "4ff94afc860109e683c56c3acffedb8a6c233e03",
-    "backendSourceSnapshotSha256": "df03dff119034858ec0a25b1171226ff3539d015318c15b5a2359eab49118dcf",
+    "productVersion": "0.2.0",
+    "backendRelease": "v0.4.2",
+    "backendCommit": "20c4a704c77cbbbff1da995e1d91b937625a8aa4",
+    "backendSourceSnapshotSha256": "d0b7b1079d4924eb7369c788a979a707d45bb63470290e6ac33ee5662d78f69f",
     "generatedAt": "2026-08-24T00:00:00.000Z",
     "generator": "managed-oss-cloud/scripts/generate-product-repositories.mjs"
   },
@@ -30,7 +30,11 @@
       "contact",
       "company",
       "deal",
-      "activity"
+      "activity",
+      "account",
+      "opportunity",
+      "ai-request-audit",
+      "export-job"
     ],
     "aiCapabilities": [
       "enrich record",
@@ -48,6 +52,187 @@
   "cleanRoom": {
     "statement": "Original clean-room implementation of the customer relationships software category, designed and written independently.",
     "sourceBoundary": "Public category behavior informed requirements; implementation and product identity are original."
+  },
+  "experience": {
+    "releaseBoundary": "Complete for every typed action declared by this product manifest; it does not claim feature parity with unrelated third-party products.",
+    "headline": "Relationship context",
+    "primaryActionId": "account-upsert",
+    "quickActionIds": [
+      "account-upsert",
+      "contact-link",
+      "opportunity-open",
+      "opportunity-transition"
+    ],
+    "navigation": [
+      "Overview",
+      "Records",
+      "Workflows",
+      "AI assistance",
+      "Settings"
+    ],
+    "workflowGroups": [
+      {
+        "name": "Create and capture",
+        "actionIds": [
+          "account-upsert",
+          "contact-link",
+          "opportunity-open",
+          "activity-record",
+          "crm-export"
+        ]
+      },
+      {
+        "name": "Operate and update",
+        "actionIds": [
+          "opportunity-transition"
+        ]
+      },
+      {
+        "name": "Inspect and report",
+        "actionIds": [
+          "pipeline-forecast"
+        ]
+      },
+      {
+        "name": "AI assistance",
+        "actionIds": [
+          "duplicate-review-propose",
+          "next-action-propose"
+        ]
+      }
+    ],
+    "metrics": [
+      {
+        "label": "Typed actions",
+        "value": 9
+      },
+      {
+        "label": "Record types",
+        "value": 8
+      },
+      {
+        "label": "AI workflows",
+        "value": 2
+      },
+      {
+        "label": "Review gates",
+        "value": 0
+      }
+    ],
+    "sampleRecords": [
+      {
+        "id": "demo-crm-01",
+        "moduleId": "crm",
+        "recordType": "contact",
+        "title": "Contact Launch",
+        "state": "active",
+        "createdAt": "2026-08-18T13:30:00.000Z",
+        "updatedAt": "2026-08-25T13:15:00.000Z",
+        "data": {
+          "owner": "Operations",
+          "evidenceStatus": "verified",
+          "nextStep": "Upsert organization account"
+        }
+      },
+      {
+        "id": "demo-crm-02",
+        "moduleId": "crm",
+        "recordType": "company",
+        "title": "Company Operations",
+        "state": "in review",
+        "createdAt": "2026-08-19T13:30:00.000Z",
+        "updatedAt": "2026-08-25T12:15:00.000Z",
+        "data": {
+          "owner": "Product",
+          "evidenceStatus": "current",
+          "nextStep": "Link contact to account"
+        }
+      },
+      {
+        "id": "demo-crm-03",
+        "moduleId": "crm",
+        "recordType": "deal",
+        "title": "Deal Evidence",
+        "state": "ready",
+        "createdAt": "2026-08-20T13:30:00.000Z",
+        "updatedAt": "2026-08-25T11:15:00.000Z",
+        "data": {
+          "owner": "Operations",
+          "evidenceStatus": "current",
+          "nextStep": "Open qualified opportunity"
+        }
+      },
+      {
+        "id": "demo-crm-04",
+        "moduleId": "crm",
+        "recordType": "activity",
+        "title": "Activity Review",
+        "state": "scheduled",
+        "createdAt": "2026-08-21T13:30:00.000Z",
+        "updatedAt": "2026-08-25T10:15:00.000Z",
+        "data": {
+          "owner": "Product",
+          "evidenceStatus": "verified",
+          "nextStep": "Transition opportunity stage"
+        }
+      },
+      {
+        "id": "demo-crm-05",
+        "moduleId": "crm",
+        "recordType": "account",
+        "title": "Account Pilot",
+        "state": "draft",
+        "createdAt": "2026-08-22T13:30:00.000Z",
+        "updatedAt": "2026-08-25T09:15:00.000Z",
+        "data": {
+          "owner": "Operations",
+          "evidenceStatus": "current",
+          "nextStep": "Record customer activity"
+        }
+      },
+      {
+        "id": "demo-crm-06",
+        "moduleId": "crm",
+        "recordType": "opportunity",
+        "title": "Opportunity Archive",
+        "state": "complete",
+        "createdAt": "2026-08-23T13:30:00.000Z",
+        "updatedAt": "2026-08-25T08:15:00.000Z",
+        "data": {
+          "owner": "Product",
+          "evidenceStatus": "current",
+          "nextStep": "Propose duplicate review"
+        }
+      },
+      {
+        "id": "demo-crm-07",
+        "moduleId": "crm",
+        "recordType": "ai-request-audit",
+        "title": "Ai Request Audit Launch",
+        "state": "active",
+        "createdAt": "2026-08-24T13:30:00.000Z",
+        "updatedAt": "2026-08-25T07:15:00.000Z",
+        "data": {
+          "owner": "Operations",
+          "evidenceStatus": "verified",
+          "nextStep": "Propose next relationship action"
+        }
+      },
+      {
+        "id": "demo-crm-08",
+        "moduleId": "crm",
+        "recordType": "export-job",
+        "title": "Export Job Operations",
+        "state": "in review",
+        "createdAt": "2026-08-25T13:30:00.000Z",
+        "updatedAt": "2026-08-25T06:15:00.000Z",
+        "data": {
+          "owner": "Product",
+          "evidenceStatus": "current",
+          "nextStep": "Compute transparent pipeline forecast"
+        }
+      }
+    ]
   },
   "actions": [
     {
